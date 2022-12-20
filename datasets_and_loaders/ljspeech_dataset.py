@@ -23,7 +23,7 @@ class LJspeechDataset(BaseDataset):
     def __init__(self, part, data_dir=None, *args, **kwargs):
         if data_dir is None:
             data_dir = Path("data/datasets/ljspeech/")
-            os.makedirs(data_dir)
+            os.makedirs(data_dir, exist_ok=True)
         self._data_dir = data_dir
         self._mel_spec_dir = "data/mel_specs/"
         index = self._get_or_load_index(part)
