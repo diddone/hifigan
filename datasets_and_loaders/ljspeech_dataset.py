@@ -7,7 +7,7 @@ from pathlib import Path
 
 import torchaudio
 from .base_dataset import BaseDataset
-from speechbrain.utils.data_utils import download_file
+import wget
 from tqdm import tqdm
 import os
 from pathlib import Path
@@ -34,7 +34,7 @@ class LJspeechDataset(BaseDataset):
     def _load_dataset(self):
         arch_path = self._data_dir / "LJSpeech-1.1.tar.bz2"
         print(f"Loading LJSpeech")
-        download_file(URL_LINKS["dataset"], arch_path)
+        wget.download(URL_LINKS["dataset"], arch_path)
         shutil.unpack_archive(arch_path, self._data_dir)
         for fpath in (self._data_dir / "LJSpeech-1.1").iterdir():
             shutil.move(str(fpath), str(self._data_dir / fpath.name))
