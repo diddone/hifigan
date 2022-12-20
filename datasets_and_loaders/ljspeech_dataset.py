@@ -34,7 +34,7 @@ class LJspeechDataset(BaseDataset):
     def _load_dataset(self):
         arch_path = self._data_dir / "LJSpeech-1.1.tar.bz2"
         print(f"Loading LJSpeech")
-        wget.download(URL_LINKS["dataset"], arch_path)
+        wget.download(URL_LINKS["dataset"], str(arch_path))
         shutil.unpack_archive(arch_path, self._data_dir)
         for fpath in (self._data_dir / "LJSpeech-1.1").iterdir():
             shutil.move(str(fpath), str(self._data_dir / fpath.name))
