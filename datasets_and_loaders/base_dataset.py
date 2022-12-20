@@ -38,7 +38,6 @@ class BaseDataset(Dataset):
             self,
             index,
             sampling_rate,
-            text_encoder: BaseTextEncoder,
             wave_augs=None,
             spec_augs=None,
             limit=None,
@@ -46,7 +45,7 @@ class BaseDataset(Dataset):
             max_text_length=None,
     ):
         self.sampling_rate = sampling_rate
-        self.text_encoder = text_encoder
+        self.text_encoder = BaseTextEncoder()
         self.wave_augs = wave_augs
         self.spec_augs = spec_augs
         self.log_spec = true
