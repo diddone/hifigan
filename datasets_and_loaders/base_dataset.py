@@ -48,7 +48,6 @@ class BaseDataset(Dataset):
         self.text_encoder = BaseTextEncoder()
         self.wave_augs = wave_augs
         self.spec_augs = spec_augs
-        self.log_spec = true
 
         self._assert_index_is_valid(index)
         index = self._filter_records_from_dataset(index, max_audio_length, max_text_length, limit)
