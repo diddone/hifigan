@@ -36,7 +36,7 @@ class GeneratorAdvLoss(nn.Module):
         loss = 0.
 
         for x in disc_gen_outputs:
-            loss += self.mse_loss(x, 1.)
+            loss += self.mse_loss(x, torch.tensor([1.]))
 
         return loss
 
@@ -48,6 +48,6 @@ class DiscriminatorAdvLoss(nn.Module):
     def forward(self, disc_real_outputs, disc_gen_outputs):
         disc_loss = 0.
         for y_real, y_gen in zip(disc_real_outputs, disc_gen_outputs):
-            disc_loss += self.mse_loss(y_real, 1.) + self.mse_loss(y_gen, 0.)
+            disc_loss += self.mse_loss(y_real, torch.tensor([1.])) + self.mse_loss(y_gen, torch.tensor([0.]))
 
         return disc_loss
