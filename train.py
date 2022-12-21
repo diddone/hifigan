@@ -68,8 +68,11 @@ def train(
             ys_gen_s, fs_gen_s = msd(gen_wavs)
             ys_real_p, fs_real_p = mpd(real_wavs)
             ys_real_s, fs_real_s = msd(real_wavs)
-            set_requires_grad([mpd, msd], True)
 
+            for l1, l2 in zip(fs_gen_p, fs_real_p):
+                for x, y in zip(l1, l2):
+                    print(x.shape, y.shape)
+                    assert x.shape == y.shape
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
             feat_s_loss = feat_criterion(fs_gen_s, fs_real_s)
             gen_p_loss = gen_criterion(ys_gen_p)
