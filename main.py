@@ -32,8 +32,8 @@ def main(config):
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
                                 config['lr'], betas=[config['adam_b1'], config['adam_b2']])
 
-    sched_g = torch.optim.lr_scheduler.ExponentialLR(optim_g, gamma=config['lr_decay'], last_epoch=config['n_epochs'])
-    sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=config['n_epochs'])
+    sched_g = torch.optim.lr_scheduler.ExponentialLR(optim_g, gamma=config['lr_decay'], last_epoch=-1)
+    sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=-1)
 
     mel_spec = MelSpectrogram(MelSpectrogramConfig())
     device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
