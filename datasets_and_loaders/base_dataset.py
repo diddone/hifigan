@@ -9,9 +9,10 @@ from torch import Tensor
 from torch.utils.data import Dataset
 
 import re
-
+from melspecs import MelSpectrogram, MelSpectrogramConfig
 
 logger = logging.getLogger(__name__)
+
 
 class BaseTextEncoder:
     def encode(self, text) -> Tensor:
@@ -56,11 +57,13 @@ class BaseDataset(Dataset):
         index = self._sort_index(index)
         self._index: List[dict] = index
 
+        self.mel_spec = MelSpectrogram(MelSpectrogramConfig())
     def __getitem__(self, ind):
         data_dict = self._index[ind]
         audio_path = data_dict["path"]
         audio_wave = self.load_audio(audio_path)
-        audio_spec = torch.load(os.path.join(self._mel_spec_dir, f'mel_spec_{ind}'))
+        audio_spec = self.mel_spec(audio_wave)
+
         return {
             "audio": audio_wave,
             "spectrogram": audio_spec,
