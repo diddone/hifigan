@@ -26,7 +26,7 @@ class MelSpectrogram(nn.Module):
 
     def __init__(self, config: MelSpectrogramConfig):
         super(MelSpectrogram, self).__init__()
-
+        self.pad_value = MelSpectrogramConfig.pad_value
         self.config = config
 
         self.mel_spectrogram = torchaudio.transforms.MelSpectrogram(
