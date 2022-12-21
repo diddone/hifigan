@@ -61,10 +61,10 @@ class BaseDataset(Dataset):
         self.mel_spec = MelSpectrogram(MelSpectrogramConfig())
 
     def __getitem__(self, ind):
+        print('Hi')
         data_dict = self._index[ind]
         audio_path = data_dict["path"]
 
-        print('Hi')
         audio_wave = self.load_audio(audio_path)
         audio_spec = self.mel_spec(audio_wave)
 
