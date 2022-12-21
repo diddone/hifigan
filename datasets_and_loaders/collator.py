@@ -25,7 +25,7 @@ def collate_fn(dataset_items: List[dict]):
 
     spec_pad_value = MelSpectrogramConfig.pad_value
     spec_batch = torch.full([batch_size, item['spectrogram'].shape[1], max_specs_length], spec_pad_value)
-    audio_batch = torch.zeros([batch_size, item['audio'].shape[1], max_audio_length])
+    audio_batch = torch.zeros([batch_size, 1, max_audio_length])
 
     for i, item in enumerate(dataset_items):
         spec_batch[i, :, :spec_lengths[i]] = item['spectrogram']
