@@ -21,7 +21,7 @@ def main(config):
     config['save_path'] = str(os.path.join(config['save_dir'], 'ckpt.tar'))
 
 
-    ds = LJspeechDataset('train', segment_size=config['segment_size'])
+    ds = LJspeechDataset('train', config['segment_size'])
     training_loader = get_training_loader(ds, config)
 
     gen = Generator(config)
