@@ -25,7 +25,7 @@ class MelLoss(nn.Module):
 
     def forward(self, melspec_gen, melspec_real):
 
-        return l1_loss(melspec_gen - melspec_real)
+        return self.l1_loss(melspec_gen - melspec_real)
 
 class GeneratorAdvLoss(nn.Module):
     def __init__(self, device):
