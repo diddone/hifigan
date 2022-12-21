@@ -6,6 +6,7 @@ class FeatureLoss(nn.Module):
         super().__init__()
 
         self.l1_loss = nn.L1Loss(reduction='none')
+
     def forward(self, inputs_list, targets_list):
         loss = 0.
 
@@ -13,7 +14,7 @@ class FeatureLoss(nn.Module):
             for x, y in zip(inputs, targets):
                 batch_size = x.size(0)
                 n_features = x.numel() / batch_size
-                coef = 1 / x.numel()
+                coef = 1. / x.numel()
                 loss += coef * self.l1_loss(x, y)
 
         return loss
