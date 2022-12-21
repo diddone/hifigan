@@ -2,7 +2,7 @@ import os
 import torch
 import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
-from utils import WanDBWriter
+from utils import WanDBWriter, set_requires_grad
 
 def train(
     training_loader, gen, mpd, msd,
