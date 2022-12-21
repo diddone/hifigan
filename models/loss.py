@@ -11,11 +11,11 @@ class FeatureLoss(nn.Module):
 
         for inputs, targets in zip(inputs_list, targets_list):
             for input, target in zip(inputs, targets):
-                l1_loss = nn.L1Loss(reduction='none')
+
                 coef = 1. / input.numel()
                 print(input.shape, target.shape, coef)
                 loss += coef * self.l1_loss(input, target)
-
+                print('Yes')
         return loss
 
 class MelLoss(nn.Module):
