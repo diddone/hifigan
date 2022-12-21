@@ -83,7 +83,7 @@ def train(
             gen_loss.backward()
             optim_g.step()
 
-            set_requires_grad([mpd, mds], True)
+            set_requires_grad([mpd, msd], True)
             sched_d.step()
             sched_g.step()
 
