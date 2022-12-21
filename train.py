@@ -76,7 +76,7 @@ def train(
                 for x, y in zip(l1, l2):
                     print(x.shape, y.shape)
                     assert x.shape == y.shape
-                    
+
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
             feat_s_loss = feat_criterion(fs_gen_s, fs_real_s)
             gen_p_loss = gen_criterion(ys_gen_p)
@@ -93,6 +93,7 @@ def train(
 
             wandb_writer.add_scalar('gen_loss', gen_loss.item())
             wandb_writer.add_scalar('disc_loss', disc_loss.item())
+            wandb_writer.add_scalar('lr', sched_d.get_lr())
 
             step += 1
             wandb_writer.set_step(step)
