@@ -28,15 +28,16 @@ class MelLoss(nn.Module):
         return l1_loss(melspec_gen - melspec_real)
 
 class GeneratorAdvLoss(nn.Module):
-    def __init__(self):
+    def __init__(self, device):
         super().__init__()
         self.mse_loss = nn.MSELoss()
+        self.one = torch.tensor([1.]).to(device)
 
     def forward(self, disc_gen_outputs):
         loss = 0.
 
         for x in disc_gen_outputs:
-            loss += self.mse_loss(x, torch.tensor([1.]))
+            loss += self.mse_loss(x, self.one)
 
         return loss
 
@@ -45,9 +46,11 @@ class DiscriminatorAdvLoss(nn.Module):
         super().__init__()
         self.mse_loss = nn.MSELoss()
 
+        self.zero = torch.tensor([0.]).to(device)
+        self.one = torch.tensor([1.]).to(device)
     def forward(self, disc_real_outputs, disc_gen_outputs):
         disc_loss = 0.
         for y_real, y_gen in zip(disc_real_outputs, disc_gen_outputs):
-            disc_loss += self.mse_loss(y_real, torch.tensor([1.])) + self.mse_loss(y_gen, torch.tensor([0.]))
+            disc_loss += self.mse_loss(y_real, self.one) + self.mse_loss(y_gen, self.zero)
 
         return disc_loss
