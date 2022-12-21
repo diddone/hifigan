@@ -98,20 +98,19 @@ def train(
         sched_d.step()
         sched_g.step()
 
-        if i % 5 == 4:
-            wandb_writer.add_audio('gen_audio', gen_wavs)
+        wandb_writer.add_audio('gen_audio', gen_wavs[0])
 
-            if not os.path.isdir(config['save_dir']):
-                os.makedirs(config['save_dir'], exist_ok=True)
+        if not os.path.isdir(config['save_dir']):
+            os.makedirs(config['save_dir'], exist_ok=True)
 
-            torch.save({
-                'gen_state': gen.state_dict(),
-                'gen_opt_state': optim_g.state_dict(),
-                'mpd_state': mpd.state_dict(),
-                'msd_state': msd.state_dict(),
-                'disc_opt_state': optim_d.state_dict(),
-                'params': params
-            }, params['save_path'])
+        torch.save({
+            'gen_state': gen.state_dict(),
+            'gen_opt_state': optim_g.state_dict(),
+            'mpd_state': mpd.state_dict(),
+            'msd_state': msd.state_dict(),
+            'disc_opt_state': optim_d.state_dict(),
+            'params': params
+        }, params['save_path'])
 
 
 
