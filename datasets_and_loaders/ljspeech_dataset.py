@@ -19,7 +19,7 @@ URL_LINKS = {
 
 
 class LJspeechDataset(BaseDataset):
-    def __init__(self, part, data_dir=None, *args, **kwargs):
+    def __init__(self, part, segment_size, data_dir=None, *args, **kwargs):
         if data_dir is None:
             data_dir = Path("data/datasets/ljspeech/")
             os.makedirs(data_dir, exist_ok=True)
@@ -29,7 +29,7 @@ class LJspeechDataset(BaseDataset):
 
         self.part = part
         sampling_rate = 22050
-        super().__init__(index, sampling_rate, *args, **kwargs)
+        super().__init__(index, sampling_rate, segment_size, *args, **kwargs)
 
     def _load_dataset(self):
         arch_path = self._data_dir / "LJSpeech-1.1.tar.bz2"

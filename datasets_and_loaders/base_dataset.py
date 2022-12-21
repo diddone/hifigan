@@ -8,6 +8,7 @@ import torch
 import torchaudio
 from torch import Tensor
 from torch.utils.data import Dataset
+import torch.nn.functional as F
 
 import re
 from melspecs import MelSpectrogram, MelSpectrogramConfig
@@ -40,13 +41,16 @@ class BaseDataset(Dataset):
             self,
             index,
             sampling_rate,
+            segment_size,
             wave_augs=None,
             spec_augs=None,
             limit=None,
             max_audio_length=None,
             max_text_length=None,
     ):
+
         self.sampling_rate = sampling_rate
+        self.segment_size = segment_size
         self.text_encoder = BaseTextEncoder()
         self.wave_augs = wave_augs
         self.spec_augs = spec_augs
@@ -65,13 +69,18 @@ class BaseDataset(Dataset):
         audio_path = data_dict["path"]
 
         audio_wave = self.load_audio(audio_path)
-        audio_spec = self.mel_spec(audio_wave)
+        if self.segment_size <= audio_wave.shape[1]:
+            audio_start = random.randint(0,  audio_wave.shape[1] - self.segment_size)
+            audio_wave = audio_wave[:, audio_start:audio_start+self.segment_size]
+        else:
+            audio_wave = F.pad(audio_wave, (0, self.segment_size - audio_wave.shape[1]))
 
+        audio_spec = self.mel_spec(audio_wave)
+        
         return {
             "audio": audio_wave,
             "spectrogram": audio_spec,
             "duration": audio_wave.size(1) / self.sampling_rate,
-            "text": data_dict["text"],
             "audio_path": audio_path,
         }
 
