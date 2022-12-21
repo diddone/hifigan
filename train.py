@@ -81,9 +81,6 @@ def train(
             optim_g.step()
 
             set_requires_grad([mpd, msd], True)
-            sched_d.step()
-            sched_g.step()
-
             wandb_writer.add_scalar('gen_loss', gen_loss.item())
             wandb_writer.add_scalar('mel_loss', mel_loss_coef * mel_loss.item())
             wandb_writer.add_scalar('feat_p_loss', feat_loss_coef * feat_p_loss.item())
@@ -97,6 +94,9 @@ def train(
             step += 1
             wandb_writer.set_step(step)
 
+
+        sched_d.step()
+        sched_g.step()
 
         if i % 5 == 4:
             wandb_writer.add_audio('gen_audio', gen_wavs)
@@ -112,6 +112,8 @@ def train(
                 'disc_opt_state': optim_d.state_dict(),
                 'params': params
             }, params['save_path'])
+
+
 
 
 
