@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
 from utils import WanDBWriter, set_requires_grad
+import itertools
 
 def train(
     training_loader, gen, mpd, msd,
@@ -52,6 +53,9 @@ def train(
 
             disc_loss = disc_p_loss + disc_s_loss
             disc_loss.backward()
+
+
+            torch.nn.utils.clip_grad_norm_(itertools.chain(msd.parameters(), mpd.parameters()), 10)
             optim_d.step()
 
             #gen losses
@@ -63,7 +67,6 @@ def train(
             mel_loss = mel_criterion(gen_mels, F.pad(real_mels, pad=(0,pad_size), value=pad_value))
 
             set_requires_grad([mpd, msd], False)
-            print('Gen and real shapes', gen_wavs.shape, real_wavs.shape)
             ys_gen_p, fs_gen_p = mpd(gen_wavs)
             ys_gen_s, fs_gen_s = msd(gen_wavs)
             ys_real_p, fs_real_p = mpd(real_wavs)
@@ -73,7 +76,7 @@ def train(
                 for x, y in zip(l1, l2):
                     print(x.shape, y.shape)
                     assert x.shape == y.shape
-            print('done')
+                    
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
             feat_s_loss = feat_criterion(fs_gen_s, fs_real_s)
             gen_p_loss = gen_criterion(ys_gen_p)
@@ -81,6 +84,7 @@ def train(
 
             gen_loss = mel_loss_coef * mel_loss + feat_loss_coef * (feat_p_loss + feat_s_loss) + gen_p_loss + gen_s_loss
             gen_loss.backward()
+            torch.nn.utils.clip_grad_norm_(gen.parameters(), 10)
             optim_g.step()
 
             set_requires_grad([mpd, msd], True)
