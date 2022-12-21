@@ -42,12 +42,12 @@ def train(
             real_wavs = F.pad(real_mels, (0, gen_wavs.shape[-1] - real_wavs.shape[-1]))
 
             #mpd
-            ys_real_p, fs_real_p = mdp(real_wavs)
-            ys_gen_p, _  = mdp(gen_wavs.detach())
+            ys_real_p, fs_real_p = mpd(real_wavs)
+            ys_gen_p, _  = mpd(gen_wavs.detach())
             disc_p_loss = discr_criterion(ys_real_p, ys_gen_p)
             #msd
-            ys_real_s, fs_real_s = mds(real_wavs)
-            ys_gen_s, _  = mds(gen_wavs.detach())
+            ys_real_s, fs_real_s = msd(real_wavs)
+            ys_gen_s, _  = msd(gen_wavs.detach())
             disc_s_loss = discr_criterion(ys_real_s, ys_gen_s)
 
             disc_loss = disc_p_loss + disc_s_loss
