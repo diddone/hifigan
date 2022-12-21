@@ -53,8 +53,6 @@ def train(
 
             disc_loss = disc_p_loss + disc_s_loss
             disc_loss.backward()
-
-
             torch.nn.utils.clip_grad_norm_(itertools.chain(msd.parameters(), mpd.parameters()), 10)
             optim_d.step()
 
@@ -72,11 +70,6 @@ def train(
             ys_real_p, fs_real_p = mpd(real_wavs)
             ys_real_s, fs_real_s = msd(real_wavs)
 
-            for l1, l2 in zip(fs_gen_p, fs_real_p):
-                for x, y in zip(l1, l2):
-                    print(x.shape, y.shape)
-                    assert x.shape == y.shape
-
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
             feat_s_loss = feat_criterion(fs_gen_s, fs_real_s)
             gen_p_loss = gen_criterion(ys_gen_p)
@@ -84,7 +77,7 @@ def train(
 
             gen_loss = mel_loss_coef * mel_loss + feat_loss_coef * (feat_p_loss + feat_s_loss) + gen_p_loss + gen_s_loss
             gen_loss.backward()
-            torch.nn.utils.clip_grad_norm_(gen.parameters(), 10)
+            torch.nn.utils.clip_grad_norm_(gen.parameters(), 20)
             optim_g.step()
 
             set_requires_grad([mpd, msd], True)
@@ -92,11 +85,18 @@ def train(
             sched_g.step()
 
             wandb_writer.add_scalar('gen_loss', gen_loss.item())
+            wandb_writer.add_scalar('mel_loss', mel_loss_coef * mel_loss.item())
+            wandb_writer.add_scalar('feat_p_loss', feat_loss_coef * feat_p_loss.item())
+            wandb_writer.add_scalar('feat_s_loss', feat_loss_coef * feat_s_loss.item())
+            wandb_writer.add_scalar('gen_p_loss', gen_p_loss.item())
+            wandb_writer.add_scalar('gen_s_loss', gen_s_loss.item())
+
             wandb_writer.add_scalar('disc_loss', disc_loss.item())
-            wandb_writer.add_scalar('lr', sched_d.get_last_lr()[0])
+            wandb_writer.add_scalar('learning rate', sched_g.get_last_lr()[0])
 
             step += 1
             wandb_writer.set_step(step)
+
 
         if i % 5 == 4:
             wandb_writer.add_audio('gen_audio', gen_wavs)

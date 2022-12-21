@@ -10,8 +10,8 @@
     "lr_decay": 0.999,
     "seed": 99,
 
-    "mel_loss_coef": 45,
-    "feat_loss_coef": 2,
+    "mel_loss_coef": 45.0,
+    "feat_loss_coef": 2.0,
 
     "upsample_strides": [8,8,2,2],
     "upsample_kernel_sizes": [16,16,4,4],

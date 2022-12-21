@@ -10,7 +10,6 @@ class FeatureLoss(nn.Module):
 
         for inputs, targets in zip(inputs_list, targets_list):
             for input, target in zip(inputs, targets):
-
                 loss += torch.abs(input - target).mean()
 
         return loss
