@@ -4,8 +4,6 @@ from .collator import collate_fn
 
 def get_training_loader(dataset, params):
 
-    dataset = LJspeechDataset('train')
-
     return DataLoader(
         dataset,
         batch_size=params['batch_size'],
