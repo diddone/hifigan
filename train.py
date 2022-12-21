@@ -73,6 +73,7 @@ def train(
                 for x, y in zip(l1, l2):
                     print(x.shape, y.shape)
                     assert x.shape == y.shape
+            print('done')
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
             feat_s_loss = feat_criterion(fs_gen_s, fs_real_s)
             gen_p_loss = gen_criterion(ys_gen_p)
