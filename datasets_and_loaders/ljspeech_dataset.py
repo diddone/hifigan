@@ -9,7 +9,6 @@ import torchaudio
 from .base_dataset import BaseDataset
 import wget
 from tqdm import tqdm
-import os
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -20,14 +19,12 @@ URL_LINKS = {
 
 
 class LJspeechDataset(BaseDataset):
-    def __init__(self, part, data_dir=None, mel_spec_dir=None, *args, **kwargs):
+    def __init__(self, part, data_dir=None, *args, **kwargs):
         if data_dir is None:
             data_dir = Path("data/datasets/ljspeech/")
             os.makedirs(data_dir, exist_ok=True)
         self._data_dir = data_dir
 
-        if mel_spec_dir is None:
-            self._mel_spec_dir = "data/mel_specs/"
         index = self._get_or_load_index(part)
 
         self.part = part
