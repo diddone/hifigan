@@ -42,11 +42,11 @@ def train(
             real_wavs = F.pad(real_wavs, (0, gen_wavs.shape[-1] - real_wavs.shape[-1]))
 
             #mpd
-            ys_real_p, fs_real_p = mpd(real_wavs)
+            ys_real_p, _ = mpd(real_wavs)
             ys_gen_p, _  = mpd(gen_wavs.detach())
             disc_p_loss = discr_criterion(ys_real_p, ys_gen_p)
             #msd
-            ys_real_s, fs_real_s = msd(real_wavs)
+            ys_real_s, _ = msd(real_wavs)
             ys_gen_s, _  = msd(gen_wavs.detach())
             disc_s_loss = discr_criterion(ys_real_s, ys_gen_s)
 
@@ -63,8 +63,11 @@ def train(
             mel_loss = mel_criterion(gen_mels, F.pad(real_mels, pad=(0,pad_size), value=pad_value))
 
             set_requires_grad([mpd, msd], False)
+            print('Gen and real shapes', gen_wavs.shape, real_wavs.shape)
             ys_gen_p, fs_gen_p = mpd(gen_wavs)
             ys_gen_s, fs_gen_s = msd(gen_wavs)
+            ys_real_p, fs_real_p = mpd(real_wavs)
+            ys_real_s, fs_real_s = msd(real_wavs)
             set_requires_grad([mpd, msd], True)
 
             feat_p_loss = feat_criterion(fs_gen_p, fs_real_p)
