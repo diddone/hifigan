@@ -10,13 +10,10 @@ def collate_fn(dataset_items: List[dict]):
     """
     Collate and pad fields in dataset items
     """
-
     spec_lengths = []
     audio_lengths = []
-    text = []
     for item in dataset_items:
         spec_lengths.append(item['spectrogram'].shape[-1])
-        text.append(item['text'])
         audio_lengths.append(item['audio'].shape[-1])
 
     batch_size = len(spec_lengths)
@@ -35,5 +32,4 @@ def collate_fn(dataset_items: List[dict]):
         'spectrogram': spec_batch,
         'audio': audio_batch,
         'spectrogram_length': torch.tensor(spec_lengths).long(),
-        'text': text,
     }
