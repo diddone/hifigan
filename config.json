@@ -26,7 +26,7 @@
 
     "use_spectral_norm": true,
 
-    "segment_size": 16384,
+    "segment_size": 8192,
     "n_mels": 80,
     "n_freq": 1025,
     "n_fft": 1024,
