@@ -5,15 +5,16 @@ class FeatureLoss(nn.Module):
     def __init__(self):
         super().__init__()
 
+        self.l1_loss = nn.L1Loss(reduction='none')
     def forward(self, inputs_list, targets_list):
         loss = 0.
 
         for inputs, targets in zip(inputs_list, targets_list):
-            for x, y in zip(inputs, targets):
+            for input, target in zip(inputs, targets):
                 l1_loss = nn.L1Loss(reduction='none')
                 coef = 1. / x.numel()
-                print(x.shape, y.shape, coef)
-                loss += coef * l1_loss(x, y)
+                print(input.shape, target.shape, coef)
+                loss += coef * self.l1_loss(input, target)
 
         return loss
 
