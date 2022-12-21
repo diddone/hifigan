@@ -32,8 +32,7 @@ def train(
     for epoch in range(n_epochs):
         for i, batch in enumerate(training_loader):
 
-            print(batch.keys())
-            real_mels = batch['spectogram'].to(device, non_blocking=True)
+            real_mels = batch['spectrogram'].to(device, non_blocking=True)
             real_wavs = batch['audio'].to(device, non_blocking=True)
 
             #mpd and msd losses
