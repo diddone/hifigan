@@ -7,6 +7,7 @@ import torch
 import torchaudio
 from torch import Tensor
 from torch.utils.data import Dataset
+import os
 
 import re
 from melspecs import MelSpectrogram, MelSpectrogramConfig
@@ -58,9 +59,12 @@ class BaseDataset(Dataset):
         self._index: List[dict] = index
 
         self.mel_spec = MelSpectrogram(MelSpectrogramConfig())
+
     def __getitem__(self, ind):
         data_dict = self._index[ind]
         audio_path = data_dict["path"]
+
+        print('Hi')
         audio_wave = self.load_audio(audio_path)
         audio_spec = self.mel_spec(audio_wave)
 
