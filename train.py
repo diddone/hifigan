@@ -93,7 +93,7 @@ def train(
 
             wandb_writer.add_scalar('gen_loss', gen_loss.item())
             wandb_writer.add_scalar('disc_loss', disc_loss.item())
-            wandb_writer.add_scalar('lr', sched_d.get_lr()[0])
+            wandb_writer.add_scalar('lr', sched_d.get_last_lr()[0])
 
             step += 1
             wandb_writer.set_step(step)
