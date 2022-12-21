@@ -15,7 +15,7 @@ class FeatureLoss(nn.Module):
                 batch_size = x.size(0)
                 n_features = x.numel() / batch_size
                 coef = 1. / x.numel()
-                print(x.shape, y.shape)
+                print(x.shape, y.shape, coef)
                 loss += coef * self.l1_loss(x, y)
 
         return loss
