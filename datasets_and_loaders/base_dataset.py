@@ -1,3 +1,4 @@
+import os
 import logging
 import random
 from typing import List, Union
@@ -7,7 +8,6 @@ import torch
 import torchaudio
 from torch import Tensor
 from torch.utils.data import Dataset
-import os
 
 import re
 from melspecs import MelSpectrogram, MelSpectrogramConfig
@@ -61,7 +61,6 @@ class BaseDataset(Dataset):
         self.mel_spec = MelSpectrogram(MelSpectrogramConfig())
 
     def __getitem__(self, ind):
-        print('Hi')
         data_dict = self._index[ind]
         audio_path = data_dict["path"]
 
@@ -71,7 +70,7 @@ class BaseDataset(Dataset):
         return {
             "audio": audio_wave,
             "spectrogram": audio_spec,
-            "duration": audio_wave.size(1) / sampling_rate,
+            "duration": audio_wave.size(1) / self.sampling_rate,
             "text": data_dict["text"],
             "audio_path": audio_path,
         }
