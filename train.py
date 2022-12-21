@@ -23,8 +23,8 @@ def train(
 
     mel_loss_coef = params['mel_loss_coef']
     feat_loss_coef = params['feat_loss_coef']
-    discr_criterion = DiscriminatorAdvLoss()
-    gen_criterion = GeneratorAdvLoss()
+    discr_criterion = DiscriminatorAdvLoss(device)
+    gen_criterion = GeneratorAdvLoss(device)
     feat_criterion = FeatureLoss()
     mel_criterion = MelLoss()
 
