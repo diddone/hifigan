@@ -42,7 +42,7 @@ class GeneratorAdvLoss(nn.Module):
         return loss
 
 class DiscriminatorAdvLoss(nn.Module):
-    def __init__(self):
+    def __init__(self, device):
         super().__init__()
         self.mse_loss = nn.MSELoss()
 
