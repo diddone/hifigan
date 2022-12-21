@@ -5,17 +5,14 @@ class FeatureLoss(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.l1_loss = nn.L1Loss(reduction='none')
     def forward(self, inputs_list, targets_list):
         loss = 0.
 
         for inputs, targets in zip(inputs_list, targets_list):
             for input, target in zip(inputs, targets):
 
-                coef = 1. / input.numel()
-                print(input.shape, target.shape, coef)
-                loss += coef * self.l1_loss(input, target)
-                print('Yes')
+                loss += torch.abs(input - target).mean()
+
         return loss
 
 class MelLoss(nn.Module):
