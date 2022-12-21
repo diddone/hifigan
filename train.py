@@ -28,7 +28,7 @@ def train(
     feat_criterion = FeatureLoss()
     mel_criterion = MelLoss()
 
-    step = 0.
+    step = 0
     for epoch in range(n_epochs):
         for i, batch in enumerate(training_loader):
 
