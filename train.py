@@ -39,7 +39,7 @@ def train(
             optim_d.zero_grad()
             gen_wavs = gen(real_mels)
             gen_mels = mel_spec(gen_wavs)
-            real_wavs = F.pad(real_mels, (0, gen_wavs.shape[-1] - real_wavs.shape[-1]))
+            real_wavs = F.pad(real_wavs, (0, gen_wavs.shape[-1] - real_wavs.shape[-1]))
 
             #mpd
             ys_real_p, fs_real_p = mpd(real_wavs)
