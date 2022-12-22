@@ -98,7 +98,7 @@ def train(
         sched_d.step()
         sched_g.step()
 
-        wandb_writer.add_audio('gen_audio', gen_wavs[0])
+        wandb_writer.add_audio('gen_audio', gen_wavs[0], sample_rate=params['sampling_rate'])
 
         if not os.path.isdir(config['save_dir']):
             os.makedirs(config['save_dir'], exist_ok=True)
