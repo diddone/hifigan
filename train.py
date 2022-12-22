@@ -2,8 +2,9 @@ import os
 import torch
 import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
-from utils import WanDBWriter, set_requires_grad
+from utils import WanDBWriter, set_requires_grad, load_mels_val_batch
 import itertools
+
 
 def train(
     training_loader, gen, mpd, msd,
@@ -11,9 +12,6 @@ def train(
     params, mel_spec, device):
 
     wandb_writer = WanDBWriter(params)
-    gen.train()
-    mpd.train()
-    msd.train()
 
     gen = gen.to(device)
     mpd = mpd.to(device)
@@ -31,6 +29,9 @@ def train(
 
     step = 0
     for epoch in range(n_epochs):
+        gen.train()
+        mpd.train()
+        msd.train()
         for i, batch in enumerate(training_loader):
 
             real_mels = batch['spectrogram'].to(device, non_blocking=True)
@@ -98,9 +99,14 @@ def train(
         sched_d.step()
         sched_g.step()
 
-        wandb_writer.add_audio('gen_audio', gen_wavs[0], sample_rate=params['sampling_rate'])
+        # log audio
+        val_mels_batch = load_mels_val_batch(mel_spec, device)
+        with torch.no_grad():
+            val_gen_wavs = gen(val_mels_batch)
+        for i in range(val_gen_wavs.shape[0]):
+            wandb_writer.add_audio(f'gen_audio_{i}', val_gen_wavs[0], sample_rate=params['sampling_rate'])
 
-        if not os.path.isdir(config['save_dir']):
+        if not os.path.isdir(params['save_dir']):
             os.makedirs(config['save_dir'], exist_ok=True)
 
         torch.save({
@@ -111,7 +117,6 @@ def train(
             'disc_opt_state': optim_d.state_dict(),
             'params': params
         }, params['save_path'])
-
 
 
 
