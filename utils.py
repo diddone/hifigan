@@ -30,8 +30,8 @@ def get_activation(params):
 
 def load_mels_val_batch(mel_spec, device):
     paths = [
-        '/home/dpozdeev/nv/data/datasets/ljspeech/train/LJ001-0004.wav',
-        '/home/dpozdeev/nv/data/datasets/ljspeech/train/LJ001-0006.wav'
+        'data/datasets/ljspeech/train/LJ001-0004.wav',
+        'data/datasets/ljspeech/train/LJ001-0006.wav'
     ]
 
     wavs_list = []
