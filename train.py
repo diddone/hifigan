@@ -28,6 +28,13 @@ def train(
     mel_criterion = MelLoss()
 
     step = 0
+
+    val_mels_batch = load_mels_val_batch(mel_spec, device)
+    with torch.no_grad():
+        val_gen_wavs = gen(val_mels_batch).detach().cpu()
+    for i in range(val_gen_wavs.shape[0]):
+        wandb_writer.add_audio(f'gen_audio_{i}', val_gen_wavs[0], sample_rate=params['sampling_rate'])
+
     for epoch in range(n_epochs):
         gen.train()
         mpd.train()

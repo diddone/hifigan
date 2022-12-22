@@ -5,6 +5,7 @@ from functools import partial
 from datetime import datetime
 import numpy as np
 import wandb
+import torchaudio
 
 def set_requires_grad(models, is_req_grad):
     for model in models:
@@ -79,6 +80,7 @@ class WanDBWriter:
 
         wandb.init(
             project=params['wandb_project'],
+            entity=params['wandb_entity'],
             config=params,
         )
         self.wandb = wandb
