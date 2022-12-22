@@ -7,6 +7,7 @@ import numpy as np
 import wandb
 import torchaudio
 
+
 def set_requires_grad(models, is_req_grad):
     for model in models:
         for param in model.parameters():
@@ -63,6 +64,7 @@ class WanDBWriter:
             project=params['wandb_project'],
             entity=params['wandb_entity'],
             config=params,
+            dir='/home/dpozdeev/nv/'
         )
         self.wandb = wandb
 
@@ -99,7 +101,8 @@ class WanDBWriter:
         }, step=self.step)
 
     def add_audio(self, scalar_name, audio, sample_rate=None):
-        audio = audio.detach().cpu().numpy().T
+        if isinstance(audio, (torch.Tensor, np.ndarray)):
+            audio = audio.T
         self.wandb.log({
             self.scalar_name(scalar_name): self.wandb.Audio(audio, sample_rate=sample_rate)
         }, step=self.step)

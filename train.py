@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
 from utils import WanDBWriter, set_requires_grad, load_mels_val_batch
 import itertools
-
+import torchaudio
 
 def train(
     training_loader, gen, mpd, msd,
@@ -28,12 +28,6 @@ def train(
     mel_criterion = MelLoss()
 
     step = 0
-
-    val_mels_batch = load_mels_val_batch(mel_spec, device)
-    with torch.no_grad():
-        val_gen_wavs = gen(val_mels_batch).detach().cpu()
-    for i in range(val_gen_wavs.shape[0]):
-        wandb_writer.add_audio(f'gen_audio_{i}', val_gen_wavs[0], sample_rate=params['sampling_rate'])
 
     for epoch in range(n_epochs):
         gen.train()
@@ -107,14 +101,16 @@ def train(
         sched_g.step()
 
         # log audio
+        if not os.path.isdir(params['save_dir']):
+            os.makedirs(params['save_dir'], exist_ok=True)
+
         val_mels_batch = load_mels_val_batch(mel_spec, device)
         with torch.no_grad():
-            val_gen_wavs = gen(val_mels_batch)
-        for i in range(val_gen_wavs.shape[0]):
-            wandb_writer.add_audio(f'gen_audio_{i}', val_gen_wavs[0], sample_rate=params['sampling_rate'])
+            val_gen_wavs = gen(val_mels_batch).detach().cpu()
 
-        if not os.path.isdir(params['save_dir']):
-            os.makedirs(config['save_dir'], exist_ok=True)
+        for i in range(val_gen_wavs.shape[0]):
+            cur_path = str(os.path.join(params['save_dir'], f'val_sample_{i}.wav'))
+            torchaudio.save(cur_path, val_gen_wavs[i], params['sampling_rate'])
 
         torch.save({
             'gen_state': gen.state_dict(),
