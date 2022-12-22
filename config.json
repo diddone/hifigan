@@ -1,5 +1,6 @@
 {
     "wandb_project": "neural_vocoder",
+    "wandb_entity": "diddone",
 
     "num_gpus": 0,
     "batch_size": 10,
