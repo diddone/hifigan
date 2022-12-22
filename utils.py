@@ -64,7 +64,6 @@ class WanDBWriter:
             project=params['wandb_project'],
             entity=params['wandb_entity'],
             config=params,
-            dir='/home/dpozdeev/nv/'
         )
         self.wandb = wandb
 
