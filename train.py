@@ -2,10 +2,9 @@ import os
 import torch
 import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
-from utils import WanDBWriter, set_requires_grad, load_mels_val_batch
+from utils import WanDBWriter, set_requires_grad, save_wav_batch, load_mels_batch, resume_from_ckpt
 import itertools
 import torchaudio
-from utils import save_wav_batch, load_mels_batch, resume_from_ckpt
 
 def train(
     training_loader, gen, mpd, msd,
@@ -30,7 +29,6 @@ def train(
     gen_criterion = GeneratorAdvLoss(device)
     feat_criterion = FeatureLoss()
     mel_criterion = MelLoss()
-
 
     step = 0
 
