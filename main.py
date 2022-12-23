@@ -30,6 +30,9 @@ def main(config):
     if 'ckpt_path' in config.keys():
         resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd, device=device)
 
+    gen = gen.to(device)
+    mpd = mpd.to(device)
+    msd = msd.to(device)
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
                                 config['lr'], betas=[config['adam_b1'], config['adam_b2']])
