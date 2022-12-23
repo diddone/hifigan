@@ -14,7 +14,7 @@ def train(
     wandb_writer = WanDBWriter(params)
 
     if 'ckpt_path' in params.keys():
-        resume_from_ckpt(params['ckpt_path'], device, gen, mpd, msd, opt_g, opt_d)
+        resume_from_ckpt(params['ckpt_path'], device, gen, mpd, msd, optim_g, optim_d)
 
     gen = gen.to(device)
     mpd = mpd.to(device)
