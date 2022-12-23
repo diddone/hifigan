@@ -5,6 +5,7 @@ from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
 from utils import WanDBWriter, set_requires_grad, load_mels_val_batch
 import itertools
 import torchaudio
+from utils import save_wav_batch, load_mels_batch, resume_from_ckpt
 
 def train(
     training_loader, gen, mpd, msd,
@@ -12,6 +13,9 @@ def train(
     params, mel_spec, device):
 
     wandb_writer = WanDBWriter(params)
+
+    if 'ckpt_path' in params.keys():
+        resume_from_ckpt(params['ckpt_path'], device, gen, mpd, msd, opt_g, opt_d)
 
     gen = gen.to(device)
     mpd = mpd.to(device)
@@ -26,6 +30,7 @@ def train(
     gen_criterion = GeneratorAdvLoss(device)
     feat_criterion = FeatureLoss()
     mel_criterion = MelLoss()
+
 
     step = 0
 
@@ -104,13 +109,11 @@ def train(
         if not os.path.isdir(params['save_dir']):
             os.makedirs(params['save_dir'], exist_ok=True)
 
-        val_mels_batch = load_mels_val_batch(mel_spec, device)
+        val_mels_batch = load_mels_batch(mel_spec, device)
         with torch.no_grad():
             val_gen_wavs = gen(val_mels_batch).detach().cpu()
 
-        for i in range(val_gen_wavs.shape[0]):
-            cur_path = str(os.path.join(params['save_dir'], f'val_sample_{i}.wav'))
-            torchaudio.save(cur_path, val_gen_wavs[i], params['sampling_rate'])
+        save_wav_batch(params['save_dir'], val_gen_wavs, params['sampling_rate'])
 
         torch.save({
             'gen_state': gen.state_dict(),

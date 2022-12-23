@@ -1,3 +1,4 @@
+import os
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -6,12 +7,48 @@ from datetime import datetime
 import numpy as np
 import wandb
 import torchaudio
+from melspecs import MelSpectrogram, MelSpectrogramConfig
+import json
+from models import Generator, MSDiscriminator, MPDiscriminator
+
+
+def load_config(json_path):
+    with open(json_path) as f:
+        json_config = f.read()
+        config = json.loads(json_config)
+
+    return config
+
+
+def resume_from_ckpt(ckpt_path, device, gen, mpd, msd, opt_g, opt_d):
+
+    load_dict = torch.load(ckpt_path, map_location='cpu')
+    config = load_dict['params']
+
+    gen.load_state_dict(load_dict['gen_state'])
+    mpd.load_state_dict(load_dict['mpd_state'])
+    msd.load_state_dict(load_dict['msd_state'])
+    opt_g.load_state_dict(load_dict['gen_opt_state'])
+    opt_d.load_state_dict(load_dict['disc_opt_state'])
+
+
+def load_generator_and_config(model_path, device):
+
+    load_dict = torch.load(model_path, map_location=device)
+    config = load_dict['params']
+    gen = Generator(config)
+    gen.to(device)
+
+    gen.load_state_dict(load_dict['gen_state'])
+
+    return gen, config
 
 
 def set_requires_grad(models, is_req_grad):
     for model in models:
         for param in model.parameters():
             param.requires_grad = is_req_grad
+
 
 def set_random_seed(seed):
     torch.manual_seed(seed)
@@ -29,16 +66,18 @@ def get_activation(params):
         raise NotImplementedError('Not implemented type of activation function')
 
 
-def load_mels_val_batch(mel_spec, device):
-    paths = [
-        'data/datasets/ljspeech/train/LJ001-0004.wav',
-        'data/datasets/ljspeech/train/LJ001-0006.wav'
-    ]
+def get_mel_spec():
+    return MelSpectrogram(MelSpectrogramConfig())
+
+
+
+def load_mels_batch(path, mel_spec, device):
 
     wavs_list = []
     max_len = 0
-    for path in paths:
-        wav, _ = torchaudio.load(path)
+    for file_name in filter(lambda x: '.wav' in x, sorted(os.listdir(path))):
+        file_path = os.path.join(path, file_name)
+        wav, _ = torchaudio.load(file_path)
         wavs_list.append(wav)
         max_len = max(max_len, wav.shape[-1])
 
@@ -49,6 +88,11 @@ def load_mels_val_batch(mel_spec, device):
 
     return mel_spec(wav_batch)
 
+
+def save_wav_batch(save_path, gen_wavs, sampling_rate):
+    for i in range(gen_wavs.shape[0]):
+        cur_path = str(os.path.join(save_path, f'val_sample_{i}.wav'))
+        torchaudio.save(cur_path, gen_wavs[i], sampling_rate)
 
 class WanDBWriter:
     def __init__(self, params):
