@@ -27,7 +27,7 @@ def main(config):
     mpd = MPDiscriminator(config)
     msd = MSDiscriminator(config)
     if 'ckpt_path' in params.keys():
-        resume_models_from_ckpt(params['ckpt_path'], gen, mpd, msd)
+        resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd)
 
 
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
