@@ -30,11 +30,11 @@ def resume_models_from_ckpt(ckpt_path, gen, mpd, msd, device='cpu'):
     mpd.to(device)
     msd.to(device)
 
-def resume_opts_from_ckpt(ckpt_path, opt_g, opt_d, device='cpu'):
+def resume_optims_from_ckpt(ckpt_path, optim_g, optim_d, device='cpu'):
 
     load_dict = torch.load(ckpt_path, map_location=device)
-    opt_g.load_state_dict(load_dict['gen_opt_state'])
-    opt_d.load_state_dict(load_dict['disc_opt_state'])
+    optim_g.load_state_dict(load_dict['gen_opt_state'])
+    optim_d.load_state_dict(load_dict['disc_opt_state'])
 
 def set_lr_to_optim(lr, optim):
     for g in optim.param_groups:
