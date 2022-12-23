@@ -1,7 +1,7 @@
 {
     "wandb_project": "neural_vocoder",
     "wandb_entity": "diddone",
-    "ckpt_path": "hifigan/save/1222_130756/ckpt.tar",
+    "ckpt_path": "save/1222_130756/ckpt.tar",
     "test_audio_path": "data/test_audio",
 
     "num_gpus": 0,
