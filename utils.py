@@ -22,8 +22,6 @@ def load_config(json_path):
 def resume_models_from_ckpt(ckpt_path, gen, mpd, msd, device='cpu'):
 
     load_dict = torch.load(ckpt_path, map_location=device)
-    config = load_dict['params']
-
     gen.load_state_dict(load_dict['gen_state'])
     mpd.load_state_dict(load_dict['mpd_state'])
     msd.load_state_dict(load_dict['msd_state'])
@@ -31,8 +29,6 @@ def resume_models_from_ckpt(ckpt_path, gen, mpd, msd, device='cpu'):
 def resume_opts_from_ckpt(ckpt_path, opt_g, opt_d, device='cpu'):
 
     load_dict = torch.load(ckpt_path, map_location=device)
-    config = load_dict['params']
-
     opt_g.load_state_dict(load_dict['gen_opt_state'])
     opt_d.load_state_dict(load_dict['disc_opt_state'])
 
