@@ -2,7 +2,7 @@ import os
 import torch
 import torch.nn.functional as F
 from models import FeatureLoss, MelLoss, GeneratorAdvLoss, DiscriminatorAdvLoss
-from utils import WanDBWriter, set_requires_grad, save_wav_batch, load_mels_batch, resume_from_ckpt
+from utils import WanDBWriter, set_requires_grad, save_wav_batch, load_mels_batch
 import itertools
 import torchaudio
 
@@ -12,9 +12,6 @@ def train(
     params, mel_spec, device):
 
     wandb_writer = WanDBWriter(params)
-
-    if 'ckpt_path' in params.keys():
-        resume_from_ckpt(params['ckpt_path'], device, gen, mpd, msd, optim_g, optim_d)
 
     gen = gen.to(device)
     mpd = mpd.to(device)

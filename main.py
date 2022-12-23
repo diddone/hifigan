@@ -1,12 +1,11 @@
 import os
 import json
-import torch
 from torch import nn
 
 from datasets_and_loaders import get_training_loader
 from datasets_and_loaders import LJspeechDataset
 from models import Generator, MPDiscriminator, MSDiscriminator
-from utils import set_random_seed
+from utils import set_random_seed, load_config, resume_models_from_ckpt
 from train import train
 from melspecs import MelSpectrogram, MelSpectrogramConfig
 
@@ -27,6 +26,9 @@ def main(config):
     gen = Generator(config)
     mpd = MPDiscriminator(config)
     msd = MSDiscriminator(config)
+    if 'ckpt_path' in params.keys():
+        resume_models_from_ckpt(params['ckpt_path'], gen, mpd, msd)
+
 
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
@@ -42,9 +44,6 @@ def main(config):
 
 if __name__ == "__main__":
 
-
-    with open('config.json') as f:
-        json_config = f.read()
-        config = json.loads(json_config)
+    config = load_config('config.json')
     main(config)
 

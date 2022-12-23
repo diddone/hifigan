@@ -19,16 +19,15 @@ def load_config(json_path):
     return config
 
 
-def resume_from_ckpt(ckpt_path, device, gen, mpd, msd, opt_g, opt_d):
+def resume_models_from_ckpt(ckpt_path, gen, mpd, msd, device='cpu'):
 
-    load_dict = torch.load(ckpt_path, map_location='cpu')
+    load_dict = torch.load(ckpt_path, map_location=device)
     config = load_dict['params']
 
     gen.load_state_dict(load_dict['gen_state'])
     mpd.load_state_dict(load_dict['mpd_state'])
     msd.load_state_dict(load_dict['msd_state'])
-    opt_g.load_state_dict(load_dict['gen_opt_state'])
-    opt_d.load_state_dict(load_dict['disc_opt_state'])
+
 
 
 def load_generator_and_config(model_path, device):
