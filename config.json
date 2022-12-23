@@ -1,11 +1,11 @@
 {
     "wandb_project": "neural_vocoder",
     "wandb_entity": "diddone",
-    "ckpt_path": "save/1222_130756/ckpt.tar",
+    "ckpt_path": "ckpt.tar",
     "test_audio_path": "data/test_audio",
 
     "num_gpus": 0,
-    "batch_size": 16,
+    "batch_size": 32,
     "n_epochs": 100,
     "lr": 0.0001,
     "adam_b1": 0.8,
@@ -31,11 +31,6 @@
 
     "segment_size": 8192,
     "n_mels": 80,
-    "n_freq": 1025,
-    "n_fft": 1024,
-    "hop_size": 256,
-    "win_size": 1024,
-
     "sampling_rate": 22050,
 
     "fmin": 0,
