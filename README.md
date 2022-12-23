@@ -14,7 +14,7 @@ gdown.download(model_path)
 
 ## Test model
 
-```python
+```bash
 test.py --ckpt-path ckpt-tuned.tar -t <test audio folder> -o <your existed output dir>
 ```
 
