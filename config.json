@@ -6,13 +6,13 @@
     "num_gpus": 0,
     "batch_size": 16,
     "n_epochs": 100,
-    "lr": 0.0002,
+    "lr": 0.0004,
     "adam_b1": 0.8,
     "adam_b2": 0.99,
-    "lr_decay": 0.999,
+    "lr_decay": 0.95,
     "seed": 99,
 
-    "mel_loss_coef": 20.0,
+    "mel_loss_coef": 12.0,
     "feat_loss_coef": 2.0,
 
     "upsample_strides": [8,8,2,2],
