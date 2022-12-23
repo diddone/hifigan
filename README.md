@@ -1,5 +1,7 @@
 # HiFiGAN implementation
 
+On hand implementation of HifiGAN. Due to computational constraints final model was learned <=25 hours. For high resolution further training should be continued.
+
 ## Load model
 
 [Link](https://drive.google.com/uc?export=download&id=1Ymw4vR--v7uiWNcz2zstzZEoVYLrGJnp) to final model
@@ -17,7 +19,7 @@ test.py --ckpt-path ckpt-tuned.tar -o <your existed ouput dir>
 ```
 
 ## Wandb report
-Here is the [link](https://wandb.ai/diddone/neural_vocoder/reports/Hifigan--VmlldzozMjA4NTkz) to wandb report
+The [Link](https://wandb.ai/diddone/neural_vocoder/reports/Hifigan--VmlldzozMjA4NTkz) to wandb report
 
-## Final and base models audio
+
 
