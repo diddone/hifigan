@@ -1,6 +1,6 @@
-# HiFiGAN implementation
+# HiFiGAN
 
-On hand implementation of HifiGAN. Due to computational constraints final model was learned <=25 hours. For high resolution further training should be continued.
+Implementation of HifiGAN. Due to computational constraints, the final model has been learning for <=25 hours.
 
 ## Load model
 
