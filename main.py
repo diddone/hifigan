@@ -34,18 +34,6 @@ def main(config):
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
                                 config['lr'], betas=[config['adam_b1'], config['adam_b2']])
 
-    if 'ckpt_path' in config.keys():
-        resume_optims_from_ckpt(config['ckpt_path'], optim_g, optim_d)
-
-    gen.to(device)
-    mpd.to(device)
-    msd.to(device)
-    # loading state also loads devices, this will cast parameters to proper device
-    optim_d.load_state_dict(optim_d.state_dict())
-    optim_g.load_state_dict(optim_g.state_dict())
-    set_lr_to_optim(config['lr'], optim_d)
-    set_lr_to_optim(config['lr'], optim_g)
-
     sched_g = torch.optim.lr_scheduler.ExponentialLR(optim_g, gamma=config['lr_decay'], last_epoch=-1)
     sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=-1)
 
