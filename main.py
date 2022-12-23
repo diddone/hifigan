@@ -6,7 +6,7 @@ from torch import nn
 from datasets_and_loaders import get_training_loader
 from datasets_and_loaders import LJspeechDataset
 from models import Generator, MPDiscriminator, MSDiscriminator
-from utils import set_random_seed, load_config, resume_models_from_ckpt
+from utils import set_random_seed, load_config, resume_models_from_ckpt, resume_opts_from_ckpt, set_lr_to_optim
 from train import train
 from melspecs import MelSpectrogram, MelSpectrogramConfig
 
@@ -33,6 +33,11 @@ def main(config):
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
                                 config['lr'], betas=[config['adam_b1'], config['adam_b2']])
+
+    if 'ckpt_path' in config.keys():
+        resume_opts_from_ckpt(config['ckpt_path'], optim_g, optim_d)
+        set_lr_to_optim(config['lr'], optim_g)
+        set_lr_to_optim(config['lr'], optim_d)
 
     sched_g = torch.optim.lr_scheduler.ExponentialLR(optim_g, gamma=config['lr_decay'], last_epoch=-1)
     sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=-1)

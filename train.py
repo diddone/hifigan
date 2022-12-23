@@ -104,7 +104,7 @@ def train(
         if not os.path.isdir(params['save_dir']):
             os.makedirs(params['save_dir'], exist_ok=True)
 
-        val_mels_batch = load_mels_batch(mel_spec, device)
+        val_mels_batch = load_mels_batch(params['test_audio_path'], mel_spec, device)
         with torch.no_grad():
             val_gen_wavs = gen(val_mels_batch).detach().cpu()
 
