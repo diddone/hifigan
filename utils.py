@@ -36,7 +36,7 @@ def resume_opts_from_ckpt(ckpt_path, opt_g, opt_d, device='cpu'):
     opt_g.load_state_dict(load_dict['gen_opt_state'])
     opt_d.load_state_dict(load_dict['disc_opt_state'])
 
-def set_lr_to_optim(lr, oprim):
+def set_lr_to_optim(lr, optim):
     for g in optim.param_groups:
         g['lr'] = lr
 
