@@ -9,7 +9,6 @@ import wandb
 import torchaudio
 from melspecs import MelSpectrogram, MelSpectrogramConfig
 import json
-from models import Generator, MSDiscriminator, MPDiscriminator
 
 
 def load_config(json_path):
