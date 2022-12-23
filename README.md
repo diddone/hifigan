@@ -15,7 +15,7 @@ gdown.download(model_path)
 ## Test model
 
 ```python
-test.py --ckpt-path ckpt-tuned.tar -t <folder with test audio> -o <your existed output dir>
+test.py --ckpt-path ckpt-tuned.tar -t <test audio folder> -o <your existed output dir>
 ```
 
 ## Wandb report
