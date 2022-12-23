@@ -28,19 +28,11 @@ def main(config):
     mpd = MPDiscriminator(config)
     msd = MSDiscriminator(config)
     if 'ckpt_path' in config.keys():
-        resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd, device=device)
+        resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd, device='cpu')
 
-    gen = gen.to(device)
-    mpd = mpd.to(device)
-    msd = msd.to(device)
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
                                 config['lr'], betas=[config['adam_b1'], config['adam_b2']])
-
-    if 'ckpt_path' in config.keys():
-        resume_opts_from_ckpt(config['ckpt_path'], optim_g, optim_d, device=device)
-        set_lr_to_optim(config['lr'], optim_g)
-        set_lr_to_optim(config['lr'], optim_d)
 
     sched_g = torch.optim.lr_scheduler.ExponentialLR(optim_g, gamma=config['lr_decay'], last_epoch=-1)
     sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=-1)

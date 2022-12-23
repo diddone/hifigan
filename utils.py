@@ -26,6 +26,10 @@ def resume_models_from_ckpt(ckpt_path, gen, mpd, msd, device='cpu'):
     mpd.load_state_dict(load_dict['mpd_state'])
     msd.load_state_dict(load_dict['msd_state'])
 
+    gen.to(device)
+    mpd.to(device)
+    msd.to(device)
+
 def resume_opts_from_ckpt(ckpt_path, opt_g, opt_d, device='cpu'):
 
     load_dict = torch.load(ckpt_path, map_location=device)
