@@ -26,7 +26,7 @@ def main(config):
     gen = Generator(config)
     mpd = MPDiscriminator(config)
     msd = MSDiscriminator(config)
-    if 'ckpt_path' in params.keys():
+    if 'ckpt_path' in config.keys():
         resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd)
 
 
