@@ -1,0 +1,47 @@
+{
+    "wandb_project": "neural_vocoder",
+    "wandb_entity": "diddone",
+    "ckpt_path": "save/1222_130756/ckpt.tar",
+    "test_audio_path": "data/test_audio",
+
+    "num_gpus": 0,
+    "batch_size": 32,
+    "n_epochs": 100,
+    "lr": 0.0002,
+    "adam_b1": 0.8,
+    "adam_b2": 0.99,
+    "lr_decay": 0.96,
+    "seed": 99,
+
+    "mel_loss_coef": 25.0,
+    "feat_loss_coef": 2.0,
+
+    "upsample_strides": [8,8,2,2],
+    "upsample_kernel_sizes": [16,16,4,4],
+    "upsample_channel": 256,
+    "resblock_kernel_sizes": [3,7,11],
+    "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+
+    "activation": {
+        "name": "lrelu",
+        "slope": 0.1
+    },
+
+    "use_spectral_norm": true,
+
+    "segment_size": 8192,
+    "n_mels": 80,
+    "sampling_rate": 22050,
+
+    "fmin": 0,
+    "fmax": 8000,
+    "fmax_for_loss": null,
+
+    "num_workers": 4,
+
+    "dist_config": {
+        "dist_backend": "nccl",
+        "dist_url": "tcp://localhost:54321",
+        "world_size": 1
+    }
+}
