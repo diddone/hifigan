@@ -20,7 +20,7 @@ def main(config):
     config['save_dir'] = f'save/{datetime.now().strftime(r"%m%d_%H%M%S")}/'
     config['save_path'] = str(os.path.join(config['save_dir'], 'ckpt.tar'))
 
-
+    device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
     ds = LJspeechDataset('train', config['segment_size'])
     training_loader = get_training_loader(ds, config)
 
@@ -43,7 +43,6 @@ def main(config):
     sched_d = torch.optim.lr_scheduler.ExponentialLR(optim_d, gamma=config['lr_decay'], last_epoch=-1)
 
     mel_spec = MelSpectrogram(MelSpectrogramConfig())
-    device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
     train(training_loader, gen, mpd, msd, optim_g, optim_d, sched_g, sched_d, config, mel_spec, device)
 
 
