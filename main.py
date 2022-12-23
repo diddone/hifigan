@@ -1,5 +1,6 @@
 import os
 import json
+import torch
 from torch import nn
 
 from datasets_and_loaders import get_training_loader
@@ -28,7 +29,6 @@ def main(config):
     msd = MSDiscriminator(config)
     if 'ckpt_path' in config.keys():
         resume_models_from_ckpt(config['ckpt_path'], gen, mpd, msd)
-
 
     optim_g = torch.optim.AdamW(gen.parameters(), config['lr'], betas=[config['adam_b1'], config['adam_b2']])
     optim_d = torch.optim.AdamW(itertools.chain(msd.parameters(), mpd.parameters()),
