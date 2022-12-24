@@ -7,9 +7,10 @@ Implementation of HifiGAN. Due to computational constraints, the final model has
 [Link](https://drive.google.com/uc?export=download&id=1Ymw4vR--v7uiWNcz2zstzZEoVYLrGJnp) to final model
 ```python
 import gdown
-model_path = 'https://drive.google.com/uc?export=download&id=1Ymw4vR--v7uiWNcz2zstzZEoVYLrGJnp'
+base_model_path = 'https://drive.google.com/uc?export=download&id=1Ymw4vR--v7uiWNcz2zstzZEoVYLrGJnp'
+best_tuned_path = 'https://drive.google.com/uc?export=download&id=1oA-1fm27kx80KH5URJ0DV4s5cOj1MrdS'
 
-gdown.download(model_path)
+gdown.download(<choose your path>)
 ```
 
 ## Test model
