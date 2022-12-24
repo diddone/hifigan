@@ -19,7 +19,7 @@ test.py --ckpt-path ckpt-tuned.tar -t <test audio folder> -o <your existed outpu
 ```
 
 ## Wandb report
-The [Link](https://wandb.ai/diddone/neural_vocoder/reports/Hifigan--VmlldzozMjA4NTkz) to wandb report
+The [Link](https://wandb.ai/diddone/neural_vocoder/reports/Hifigan--VmlldzozMjA4NTkz?accessToken=3lbe5ocv6py02q6dr7smy1rakr01erhn23q00ihzmklpg29rgslkvmhugh6n120t) to wandb report
 
 
 
